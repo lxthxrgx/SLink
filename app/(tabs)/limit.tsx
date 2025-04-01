@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { SafeAreaView, TextInput, Button, View } from "react-native";
+import { SafeAreaView, TextInput, TouchableOpacity, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { BorderlessButton } from "react-native-gesture-handler";
 
 export default function Limit() {
   const [selectedValue, setSelectedValue] = useState<number>(1);
@@ -31,7 +32,12 @@ export default function Limit() {
         }}
       />
 
-      <Button title="Зберегти" onPress={() => console.log("Saved:", selectedValue, limit)} />
+      <TouchableOpacity 
+        style={{ borderRadius: 10, padding: 10, backgroundColor: 'blue' }}
+        onPress={() => console.log("Saved:", selectedValue, limit)}
+      >
+        <Text style={{ color: 'white', textAlign: 'center' }}>Зберегти</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

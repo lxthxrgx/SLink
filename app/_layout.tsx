@@ -1,21 +1,20 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { useEffect, useState } from 'react';
+import { SQLiteDatabase, openDatabaseSync } from 'expo-sqlite';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+import HomeScreen from './(tabs)';
+import Limit from './(tabs)/limit';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+const Drawer = createDrawerNavigator();
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
+  const [db, setDb] = useState<SQLiteDatabase | null>(null);
 
   useEffect(() => {
     if (loaded) {
@@ -23,17 +22,36 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  if (!loaded) {
+  useEffect(() => {
+    const database = openDatabaseSync('test.db');
+    setDb(database);
+
+    const createDbIfNeeded = async (db: SQLiteDatabase) => {
+      console.log("Creating Database if needed");
+      try {
+        await db.execAsync(
+          `CREATE TABLE IF NOT EXISTS department (
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            num INT,
+            anydesk TEXT,
+            \`limit\` REAL);`
+        );
+      } catch (error) {
+        console.error("Error creating table: ", error);
+      }
+    };
+    
+    createDbIfNeeded(database);
+  }, [loaded]);
+
+  if (!loaded || !db) {
     return null;
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Notifications" component={Limit} />
+    </Drawer.Navigator>
   );
 }

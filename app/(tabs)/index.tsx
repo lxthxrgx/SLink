@@ -1,57 +1,43 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, Text } from 'react-native';
+import { useCallback, useState } from 'react';
+import { View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { useSQLiteContext } from 'expo-sqlite';
+import { useFocusEffect } from 'expo-router';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+type Departmetn = {id: number, num:number, anydesk:string, limit:number}
+
+const [data, setData] = useState<Departmetn[]>([]);
+
+const database = useSQLiteContext();
+
+const LoadData = async () => {
+  const result = await database.getAllAsync<Departmetn>("Select * from department;")
+  setData(result);
+}
+
+useFocusEffect(
+  useCallback(()=> {
+    LoadData();
+  }, [])
+);
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>9867%#$@aA
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+    <View style={styles.stepContainer}>
+    <FlatList
+      data={data}
+      renderItem={({ item }) => (
+        <View>
+          <Text>{item.num}</Text>
+          <Text>{item.anydesk}</Text>
+          <Text>{item.limit}</Text>
+        </View>
+      )}
+      keyExtractor={(item) => item.id.toString()}
+    />
+  </View>
+);
 }
 
 const styles = StyleSheet.create({
