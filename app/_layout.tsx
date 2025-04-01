@@ -2,7 +2,7 @@ import { useFonts } from 'expo-font';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
-import { SQLiteDatabase, openDatabaseSync } from 'expo-sqlite';
+import { SQLiteDatabase, openDatabaseSync, SQLiteProvider } from 'expo-sqlite';
 
 import HomeScreen from './(tabs)';
 import Limit from './(tabs)/limit';
@@ -14,6 +14,7 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
+
   const [db, setDb] = useState<SQLiteDatabase | null>(null);
 
   useEffect(() => {
@@ -26,10 +27,10 @@ export default function RootLayout() {
     const database = openDatabaseSync('test.db');
     setDb(database);
 
-    const createDbIfNeeded = async (db: SQLiteDatabase) => {
+    (async () => {
       console.log("Creating Database if needed");
       try {
-        await db.execAsync(
+        await database.execAsync(
           `CREATE TABLE IF NOT EXISTS department (
             Id INTEGER PRIMARY KEY AUTOINCREMENT,
             num INT,
@@ -39,9 +40,7 @@ export default function RootLayout() {
       } catch (error) {
         console.error("Error creating table: ", error);
       }
-    };
-    
-    createDbIfNeeded(database);
+    })();
   }, [loaded]);
 
   if (!loaded || !db) {
@@ -49,9 +48,11 @@ export default function RootLayout() {
   }
 
   return (
-    <Drawer.Navigator initialRouteName="Home">
-      <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="Notifications" component={Limit} />
-    </Drawer.Navigator>
+    <SQLiteProvider databaseName="test.db">
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen name="Home" component={HomeScreen} />
+        <Drawer.Screen name="Notifications" component={Limit} />
+      </Drawer.Navigator>
+    </SQLiteProvider>
   );
 }
