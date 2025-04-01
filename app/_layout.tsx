@@ -3,8 +3,11 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { SQLiteDatabase, openDatabaseSync, SQLiteProvider } from 'expo-sqlite';
+import { router,Link, Stack } from 'expo-router';
+import { TouchableOpacity } from 'react-native';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
-import HomeScreen from './(tabs)';
+import HomeScreen from './index';
 import Limit from './(tabs)/limit';
 
 const Drawer = createDrawerNavigator();
@@ -49,7 +52,16 @@ export default function RootLayout() {
 
   return (
     <SQLiteProvider databaseName="test.db">
-      <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerRight: () => (
+            <Link href="/modal">
+        Open modal
+      </Link>
+          ),
+        }}
+      >
         <Drawer.Screen name="Home" component={HomeScreen} />
         <Drawer.Screen name="Notifications" component={Limit} />
       </Drawer.Navigator>

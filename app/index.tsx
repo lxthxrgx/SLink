@@ -1,7 +1,9 @@
-import { Text, View, StyleSheet, FlatList } from 'react-native';
+import { Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useCallback, useState } from 'react';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useFocusEffect } from 'expo-router';
+import { router,Link, Stack } from 'expo-router';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 type Department = { id: number; num: number; anydesk: string; limit: number };
 
