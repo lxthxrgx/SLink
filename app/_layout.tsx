@@ -9,6 +9,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 
 import HomeScreen from './index';
 import Limit from './(tabs)/limit';
+import AddDepartment from './(tabs)/addDepartment';
 
 const Drawer = createDrawerNavigator();
 SplashScreen.preventAutoHideAsync();
@@ -52,18 +53,10 @@ export default function RootLayout() {
 
   return (
     <SQLiteProvider databaseName="test.db">
-      <Drawer.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerRight: () => (
-            <Link href="/modal">
-        Open modal
-      </Link>
-          ),
-        }}
-      >
+      <Drawer.Navigator initialRouteName="Home">
         <Drawer.Screen name="Home" component={HomeScreen} />
         <Drawer.Screen name="Notifications" component={Limit} />
+        <Drawer.Screen name="Add Department" component={AddDepartment} />
       </Drawer.Navigator>
     </SQLiteProvider>
   );

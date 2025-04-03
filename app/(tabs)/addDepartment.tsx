@@ -1,43 +1,58 @@
-import { useCallback, useState } from "react"
-import Department from "../../model/Department"
+import { useEffect, useState } from "react";
+import Department from "../../model/Department";
 import { useSQLiteContext } from "expo-sqlite";
-import { useFocusEffect } from "expo-router";
-import { SafeAreaFrameContext } from "react-native-safe-area-context";
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { TextInput } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { TextInput, Button, View } from "react-native";
 
-export default function AddDepartment()
-{
-    const[data, setData] = useState<Department[]>([]);
-    const db = useSQLiteContext();
+export default function AddDepartment() {
+  const [data, setData] = useState<Department>({
+    id: 0,
+    num: 0,
+    anydesk: 0,
+    limit: 0,
+  });
 
-    // useFocusEffect(() => {
-    //     useCallback(() => {
-    //     try{
-    //         const SetData = async () => {
-    //             const entity = await db.runAsync("INSERT INTO department (num, anydesk) VALUES (? , ?);", num, anydesk);
-    //         }
+  const db = useSQLiteContext();
 
-    //         SetData();
-    //     }catch(error)
-    //     {
-    //         console.log("Error when trying to add date to db: " + error)
-    //     }
-    //     }, [db])
-    // })
+  async function SetToDB(num?: number, anydesk?: number) {
+    if (num !== undefined && anydesk !== undefined) {
+      try {
+        await db.runAsync("INSERT INTO department (num, anydesk) VALUES (?, ?)", [
+          num,
+          anydesk,
+        ]);
+      } catch (error) {
+        console.log("Error: " + error);
+      }
+    }
+  }
 
-    return(
-        <SafeAreaView>
-            <TextInput placeholder="Номер">
+  const handleChange = (field: keyof Department, value: string) => {
+    setData((prev) => ({
+      ...prev,
+      [field]: Number(value) || 0,
+    }));
+  };
 
-            </TextInput>
+  return (
+    <SafeAreaView>
+      <View>
+        <TextInput
+          placeholder="Номер"
+          value={data.num.toString()}
+          onChangeText={(value) => handleChange("num", value)}
+          keyboardType="numeric"
+        />
 
-            <TextInput placeholder="Anydesk">
+        <TextInput
+          placeholder="Anydesk"
+          value={data.anydesk.toString()}
+          onChangeText={(value) => handleChange("anydesk", value)}
+          keyboardType="numeric"
+        />
 
-            </TextInput>
-
-
-        </SafeAreaView>
-    );
-
-}   
+        <Button title="Зберегти" onPress={() => SetToDB(data.num, data.anydesk)} />
+      </View>
+    </SafeAreaView>
+  );
+}

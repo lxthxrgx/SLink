@@ -1,9 +1,9 @@
-import { Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { useCallback, useState } from 'react';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useFocusEffect } from 'expo-router';
-import { router,Link, Stack } from 'expo-router';
-import AntDesign from '@expo/vector-icons/AntDesign';
+
+const backgroundImage = require("../assets/fonts/white.jpg");
 
 type Department = { id: number; num: number; anydesk: string; limit: number };
 
@@ -28,25 +28,39 @@ export default function HomeScreen() {
   );
 
   return (
-    <View style={styles.stepContainer}>
-      <FlatList
-        data={data}
-        renderItem={({ item }) => (
-          <View>
-            <Text>{item.num}</Text>
-            <Text>{item.anydesk}</Text>
-            <Text>{item.limit}</Text>
-          </View>
-        )}
-        keyExtractor={(item) => item.id.toString()}
-      />
-    </View>
+    <ImageBackground source={backgroundImage} style={styles.stepContainer}>
+      <View>
+        <FlatList  showsVerticalScrollIndicator ={true}
+          data={data}
+          renderItem={({ item }) => (
+            <View style={styles.card}>
+              <Text># {item.num}</Text>
+              <Text>{item.anydesk}</Text>
+            </View>
+          )}
+        />
+      </View>
+      </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+    flex: 1,
+    resizeMode: "cover",
+  },
+  card: {
+    height:"90%",
+    width: "90%",
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    marginBottom: 16,
+    padding: 16,
+    marginLeft:"auto",
+    marginRight:"auto",
+    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: 'center',
+    opacity: 0.83
   },
 });

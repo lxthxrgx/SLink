@@ -1,6 +1,6 @@
 export default class Department { 
     id: number;
     num: number;
-    anydesk: string;
+    anydesk: number;
     limit: number 
 };
