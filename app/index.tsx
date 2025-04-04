@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   card: {
-    height:"90%",
+    height: 60,
     width: "90%",
     backgroundColor: "#ffffff",
     borderRadius: 10,

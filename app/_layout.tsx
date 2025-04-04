@@ -8,7 +8,6 @@ import { TouchableOpacity } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 import HomeScreen from './index';
-import Limit from './(tabs)/limit';
 import AddDepartment from './(tabs)/addDepartment';
 
 const Drawer = createDrawerNavigator();
@@ -55,7 +54,6 @@ export default function RootLayout() {
     <SQLiteProvider databaseName="test.db">
       <Drawer.Navigator initialRouteName="Home">
         <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Notifications" component={Limit} />
         <Drawer.Screen name="Add Department" component={AddDepartment} />
       </Drawer.Navigator>
     </SQLiteProvider>
