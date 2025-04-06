@@ -1,11 +1,7 @@
-import { useFonts } from 'expo-font';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { SQLiteDatabase, openDatabaseSync, SQLiteProvider } from 'expo-sqlite';
-import { router, Link, Stack } from 'expo-router';
-import { TouchableOpacity } from 'react-native';
-import AntDesign from '@expo/vector-icons/AntDesign';
 
 import HomeScreen from '../index';
 import AddDepartment from '../(tabs)/AddDepartment';
@@ -35,7 +31,7 @@ export default function Layout() {
         console.error("Error creating table: ", error);
       }
     })();
-  });
+  }, []);
 
   return (
     <SQLiteProvider databaseName="test.db">

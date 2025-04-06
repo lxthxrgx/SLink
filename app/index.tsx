@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { useCallback, useState } from 'react';
-import { useSQLiteContext } from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite';
 import { useFocusEffect, useRouter } from 'expo-router';
 
 const backgroundImage = require("../assets/fonts/white.jpg");
@@ -9,7 +9,7 @@ type Department = { id: number; num: number; anydesk: string; limit: number };
 
 export default function HomeScreen() {
   const [data, setData] = useState<Department[]>([]);
-  const database = useSQLiteContext();
+  const database = SQLite.openDatabaseSync('test.db');
   const router = useRouter();
   
   useFocusEffect(
