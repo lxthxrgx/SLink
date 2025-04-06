@@ -8,7 +8,7 @@ import { TouchableOpacity } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 import HomeScreen from './index';
-import AddDepartment from './(tabs)/addDepartment';
+import AddDepartment from './(tabs)/AddDepartment';
 
 const Drawer = createDrawerNavigator();
 SplashScreen.preventAutoHideAsync();

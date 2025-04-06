@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { useCallback, useState } from 'react';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 
 const backgroundImage = require("../assets/fonts/white.jpg");
 
@@ -10,7 +10,7 @@ type Department = { id: number; num: number; anydesk: string; limit: number };
 export default function HomeScreen() {
   const [data, setData] = useState<Department[]>([]);
   const database = useSQLiteContext();
-
+  const router = useRouter();
   useFocusEffect(
     useCallback(() => {
       const LoadData = async () => {
@@ -30,6 +30,11 @@ export default function HomeScreen() {
   return (
     <ImageBackground source={backgroundImage} style={styles.stepContainer}>
       <View>
+        <TouchableOpacity style = {styles.button} onPress={() => router.push("/pages/AddDepartment")}>
+          <Text style={styles.buttonText}>
+            ADD
+          </Text>
+        </TouchableOpacity>
         <FlatList  showsVerticalScrollIndicator ={true}
           data={data}
           renderItem={({ item }) => (
@@ -63,4 +68,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     opacity: 0.83
   },
+  button: {
+    height: 60,
+    margin: 16,
+    backgroundColor: "white",
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  buttonText: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 16
+  }
 });
