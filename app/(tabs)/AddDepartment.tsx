@@ -30,7 +30,7 @@ export default function AddDepartment() {
   const handleChange = (field: keyof Department, value: string) => {
     setData((prev) => ({
       ...prev,
-      [field]: Number(value) || 0,
+      [field]: Number(value) || '',
     }));
   };
 

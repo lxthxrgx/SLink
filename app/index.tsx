@@ -11,6 +11,7 @@ export default function HomeScreen() {
   const [data, setData] = useState<Department[]>([]);
   const database = useSQLiteContext();
   const router = useRouter();
+  
   useFocusEffect(
     useCallback(() => {
       const LoadData = async () => {
@@ -30,12 +31,11 @@ export default function HomeScreen() {
   return (
     <ImageBackground source={backgroundImage} style={styles.stepContainer}>
       <View>
-        <TouchableOpacity style = {styles.button} onPress={() => router.push("/pages/AddDepartment")}>
-          <Text style={styles.buttonText}>
-            ADD
-          </Text>
+        <TouchableOpacity style={styles.button} onPress={() => router.push("/(tabs)/AddDepartment")}>
+          <Text style={styles.buttonText}>ADD</Text>
         </TouchableOpacity>
-        <FlatList  showsVerticalScrollIndicator ={true}
+        <FlatList 
+          showsVerticalScrollIndicator={true}
           data={data}
           renderItem={({ item }) => (
             <View style={styles.card}>
@@ -45,7 +45,7 @@ export default function HomeScreen() {
           )}
         />
       </View>
-      </ImageBackground>
+    </ImageBackground>
   );
 }
 
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 16,
     padding: 16,
-    marginLeft:"auto",
-    marginRight:"auto",
+    marginLeft: "auto",
+    marginRight: "auto",
     justifyContent: 'space-between',
     flexDirection: "row",
     alignItems: 'center',
