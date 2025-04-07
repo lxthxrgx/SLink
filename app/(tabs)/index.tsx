@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { useFocusEffect, useRouter } from 'expo-router';
 
-const backgroundImage = require("../assets/fonts/white.jpg");
+const backgroundImage = require("../../assets/fonts/white.jpg");
 
 type Department = { id: number; num: number; anydesk: string; limit: number };
 
