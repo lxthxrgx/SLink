@@ -16,10 +16,10 @@ export default function HomeScreen() {
     useCallback(() => {
       const LoadData = async () => {
         try {
-          const result = await database.getAllAsync<Department>('SELECT * FROM department;');
+          const result = await database.getAllAsync<Department>('SELECT Id AS id, num, anydesk, "limit" FROM department;');
           setData(result);
         } catch (error) {
-          console.error('Database fetch error:', error);
+          //console.error('Database fetch error:', error);
         }
       };
 
@@ -38,11 +38,18 @@ export default function HomeScreen() {
           showsVerticalScrollIndicator={true}
           data={data}
           renderItem={({ item }) => (
-            <View style={styles.card}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => {
+                //console.log("Clicked item.id:", item.id);
+                router.push(`/(tabs)/${item.id}`);
+              }}
+            >
               <Text># {item.num}</Text>
               <Text>{item.anydesk}</Text>
-            </View>
+            </TouchableOpacity>
           )}
+          
         />
       </View>
     </ImageBackground>

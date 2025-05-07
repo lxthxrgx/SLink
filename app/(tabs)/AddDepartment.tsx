@@ -22,7 +22,7 @@ export default function AddDepartment() {
           anydesk,
         ]);
       } catch (error) {
-        console.log("Error: " + error);
+        //console.log("Error: " + error);
       }
     }
   }
